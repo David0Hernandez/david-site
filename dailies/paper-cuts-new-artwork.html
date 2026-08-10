@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Paper Cuts / New Artwork — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== VHS / RETRO OVERLAY ===== */
+    #vhs-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .vhs-scanlines {
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(0,0,0,0.25) 2px,
+        rgba(0,0,0,0.25) 4px
+      );
+      z-index: 2;
+    }
+    .vhs-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      z-index: 1; opacity: .15;
+    }
+    .vhs-track {
+      position: absolute; left: 0; right: 0;
+      height: 6px; background: rgba(255,255,255,.08);
+      animation: vhstrack 1.8s linear infinite;
+      z-index: 3;
+    }
+    @keyframes vhstrack {
+      0%   { top: -6px; }
+      100% { top: 100%; }
+    }
+    #vhs-rec {
+      position: absolute; top: 24px; right: 28px; z-index: 4;
+      font-family: 'Inconsolata', monospace; font-size: 13px; letter-spacing: 2px;
+      color: #f14235; display: flex; align-items: center; gap: 8px;
+      animation: blink .8s step-end infinite;
+    }
+    .rec-dot { width: 10px; height: 10px; border-radius: 50%; background: #f14235; }
+    @keyframes blink { 50% { opacity: 0; } }
+    #vhs-label {
+      position: relative; z-index: 4; text-align: center;
+      font-family: 'Inconsolata', monospace;
+    }
+    .vhs-brand {
+      font-size: clamp(48px, 12vw, 120px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      animation: vhsflicker 2s ease-in-out infinite;
+      line-height: 1;
+    }
+    @keyframes vhsflicker {
+      0%,100% { opacity:1; text-shadow: 0 0 20px #fff, 2px 0 8px #f14235; }
+      92%      { opacity:1; }
+      93%      { opacity:.2; text-shadow: none; }
+      94%      { opacity:1; }
+    }
+    .vhs-sub {
+      font-size: 13px; letter-spacing: 6px; color: #888; margin-top: 12px; text-transform: uppercase;
+    }
+    .vhs-time {
+      font-size: 20px; color: #0f0; letter-spacing: 4px; margin-top: 24px;
+    }
+    #vhs-bar {
+      position: absolute; bottom: 0; left: 0;
+      height: 4px; background: #f14235; width: 0;
+      transition: width 2.5s linear; z-index: 4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VHS OVERLAY -->
+  <div id="vhs-overlay">
+    <div class="vhs-scanlines"></div>
+    <div class="vhs-noise"></div>
+    <div class="vhs-track"></div>
+    <div id="vhs-rec"><div class="rec-dot"></div> REC</div>
+    <div id="vhs-label">
+      <div class="vhs-brand">VHS</div>
+      <div class="vhs-sub">Paper Cuts</div>
+      <div class="vhs-time" id="vhs-time">00:00:00</div>
+    </div>
+    <div id="vhs-bar"></div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>Paper Cuts / New Artwork</h1>
+  <div class="date">2024 · JUN 21</div>
+  <p>Nueva serie de obras sobre papel. La idea era volver a lo físico — a la textura, al error que no se puede deshacer con Ctrl+Z. Cada corte es definitivo.</p>
+  <p>Son piezas pequeñas, íntimas. Algunas las voy a compartir acá, otras van a quedar en físico solamente. Todavía no decidí.</p>
+  <p>La serie se llama "Paper Cuts" no solo por el material, sino por lo que representa: las pequeñas heridas que acumulamos y que terminan siendo parte de quiénes somos.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Junio 2024</p>
+
+  <script>
+    var overlay = document.getElementById('vhs-overlay');
+    var bar     = document.getElementById('vhs-bar');
+    var timeEl  = document.getElementById('vhs-time');
+    var sec = 0;
+
+    var timer = setInterval(function() {
+      sec++;
+      var h = String(Math.floor(sec/3600)).padStart(2,'0');
+      var m = String(Math.floor((sec%3600)/60)).padStart(2,'0');
+      var s = String(sec%60).padStart(2,'0');
+      timeEl.textContent = h+':'+m+':'+s;
+    }, 1000);
+
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ bar.style.width = '100%'; });
+    });
+
+    setTimeout(function() {
+      clearInterval(timer);
+      overlay.style.transition = 'opacity .6s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { overlay.remove(); }, 700);
+    }, 3000);
+  </script>
+</body>
+</html>

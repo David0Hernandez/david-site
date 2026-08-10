@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>"Seer" Now Up in Bazaar — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== GRAFFITI OVERLAY ===== */
+    #graffiti-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #111; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #graffiti-overlay canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #graffiti-word {
+      position: relative; z-index: 2;
+      font-family: Impact, 'Arial Black', sans-serif;
+      font-size: clamp(80px, 18vw, 200px);
+      font-style: italic;
+      color: transparent;
+      -webkit-text-stroke: 3px #fff;
+      text-shadow: 6px 6px 0 #f14235, 12px 12px 0 rgba(241,66,53,.3);
+      opacity: 0;
+      transform: scale(1.4) rotate(-4deg);
+      transition: opacity .4s ease .6s, transform .4s ease .6s;
+      letter-spacing: -4px;
+      user-select: none;
+    }
+    #graffiti-word.show { opacity: 1; transform: scale(1) rotate(-4deg); }
+  </style>
+</head>
+<body>
+
+  <!-- GRAFFITI OVERLAY -->
+  <div id="graffiti-overlay">
+    <canvas id="graffiti-canvas"></canvas>
+    <div id="graffiti-word">SEER</div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>"Seer" Now Up in Bazaar</h1>
+  <div class="date">2024 · AUG 12</div>
+  <p>"Seer" es una de las piezas que más tiempo me llevó. Empezó como un boceto rápido y terminó siendo algo completamente distinto — una figura que mira hacia adentro más que hacia afuera.</p>
+  <p>Está disponible ahora en el Bazaar en edición limitada. Solo cinco copias, firmadas. Una vez que se agoten, no vuelve.</p>
+  <p>Si tenés preguntas sobre la pieza o querés saber más del proceso, escribime directo.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Agosto 2024</p>
+
+  <script>
+    var canvas = document.getElementById('graffiti-canvas');
+    var ctx    = canvas.getContext('2d');
+    var overlay = document.getElementById('graffiti-overlay');
+    var word    = document.getElementById('graffiti-word');
+
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var colors = ['#f14235','#ff6b35','#ffd700','#00cfff','#ff00cc','#39ff14'];
+    var splats = [];
+
+    function randomSplat() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: 0,
+        maxR: 40 + Math.random() * 120,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 0.6 + Math.random() * 0.4,
+        speed: 4 + Math.random() * 8,
+        drops: Array.from({length: 8}, function() {
+          return { angle: Math.random() * Math.PI * 2, len: 10 + Math.random() * 60, w: 2 + Math.random() * 5 };
+        })
+      };
+    }
+
+    for (var i = 0; i < 22; i++) splats.push(randomSplat());
+
+    function drawSplat(s) {
+      ctx.save();
+      ctx.globalAlpha = s.alpha;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.color;
+      ctx.fill();
+      if (s.r > s.maxR * 0.4) {
+        s.drops.forEach(function(d) {
+          ctx.beginPath();
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(s.x + Math.cos(d.angle) * s.r * 0.8, s.y + Math.sin(d.angle) * s.r * 0.8);
+          ctx.strokeStyle = s.color;
+          ctx.lineWidth = d.w * (1 - s.r / s.maxR);
+          ctx.stroke();
+        });
+      }
+      ctx.restore();
+    }
+
+    var started = false;
+    var wordShown = false;
+
+    function animate() {
+      if (!started) { started = true; }
+      splats.forEach(function(s) {
+        if (s.r < s.maxR) { s.r += s.speed; drawSplat(s); }
+      });
+      var allDone = splats.every(function(s) { return s.r >= s.maxR; });
+      if (allDone && !wordShown) {
+        wordShown = true;
+        word.classList.add('show');
+        setTimeout(function() {
+          overlay.style.transition = 'opacity .7s ease';
+          overlay.style.opacity = '0';
+          document.body.classList.add('visible');
+          setTimeout(function() { overlay.remove(); }, 800);
+        }, 1200);
+        return;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    setTimeout(animate, 200);
+  </script>
+</body>
+</html>

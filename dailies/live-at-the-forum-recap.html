@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Live at the Forum — Recap — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== SPOTLIGHT / CONCERT OVERLAY ===== */
+    #concert-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000; overflow: hidden;
+    }
+    #concert-overlay canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #concert-title {
+      position: absolute; bottom: 22%; left: 50%; transform: translateX(-50%);
+      z-index: 2; text-align: center;
+      font-family: 'Inconsolata', monospace;
+    }
+    .concert-big {
+      font-size: clamp(24px, 6vw, 64px);
+      font-weight: 700; letter-spacing: 6px; color: #fff;
+      text-transform: uppercase;
+      text-shadow: 0 0 40px rgba(255,200,50,.8), 0 0 80px rgba(255,100,0,.4);
+    }
+    .concert-sub {
+      font-size: 11px; letter-spacing: 5px; color: rgba(255,200,50,.7);
+      margin-top: 8px; text-transform: uppercase;
+    }
+    /* Crowd silhouette */
+    #crowd {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 22%;
+      background: #000; z-index: 1;
+      clip-path: polygon(
+        0% 100%, 0% 60%, 2% 55%, 4% 60%, 5% 45%, 7% 60%, 8% 50%, 10% 65%,
+        12% 55%, 14% 65%, 16% 50%, 18% 60%, 20% 45%, 22% 60%, 24% 52%, 26% 65%,
+        28% 55%, 30% 62%, 32% 48%, 34% 60%, 36% 52%, 38% 65%, 40% 55%, 42% 62%,
+        44% 50%, 46% 60%, 48% 52%, 50% 65%, 52% 55%, 54% 60%, 56% 48%, 58% 62%,
+        60% 52%, 62% 65%, 64% 55%, 66% 60%, 68% 50%, 70% 62%, 72% 52%, 74% 65%,
+        76% 55%, 78% 60%, 80% 48%, 82% 62%, 84% 52%, 86% 65%, 88% 55%, 90% 60%,
+        92% 50%, 94% 62%, 96% 55%, 98% 65%, 100% 60%, 100% 100%
+      );
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONCERT OVERLAY -->
+  <div id="concert-overlay">
+    <canvas id="concert-canvas"></canvas>
+    <div id="crowd"></div>
+    <div id="concert-title">
+      <div class="concert-big">Live at the Forum</div>
+      <div class="concert-sub">Recap · Mayo 2023</div>
+    </div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>Live at the Forum — Recap</h1>
+  <div class="date">2023 · MAY 30</div>
+  <p>El show en The Forum fue uno de esos momentos que no se planean — simplemente suceden. El espacio, la gente, la energía de esa noche tenían algo diferente.</p>
+  <p>Tocamos durante casi dos horas. Metimos material nuevo y revisamos cosas viejas que no había tocado en años. Fue honesto.</p>
+  <p>Hay un video resumen que vamos a subir la semana que viene. Y si estuviste ahí — gracias. Esas noches existen porque ustedes las hacen posibles.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Mayo 2023</p>
+
+  <script>
+    var canvas  = document.getElementById('concert-canvas');
+    var ctx     = canvas.getContext('2d');
+    var overlay = document.getElementById('concert-overlay');
+
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var lights = [
+      { x: 0.2, angle: 0, speed: 0.008, color: 'rgba(255,200,50,', width: 0.06 },
+      { x: 0.5, angle: .4, speed: -0.012, color: 'rgba(255,100,0,', width: 0.05 },
+      { x: 0.8, angle: -.3, speed: 0.01,  color: 'rgba(200,50,255,', width: 0.055 },
+      { x: 0.35, angle: .8, speed: -0.007, color: 'rgba(50,200,255,', width: 0.045 },
+      { x: 0.65, angle: -.6, speed: 0.015, color: 'rgba(255,50,100,', width: 0.05 },
+    ];
+
+    function drawLights() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      lights.forEach(function(l) {
+        l.angle += l.speed;
+        var ox = l.x * canvas.width;
+        var oy = 0;
+        var tx = ox + Math.sin(l.angle) * canvas.height * 0.9;
+        var ty = canvas.height * 0.78;
+        var grad = ctx.createRadialGradient(ox, oy, 0, ox, oy, canvas.height);
+        grad.addColorStop(0,   l.color + '0.5)');
+        grad.addColorStop(0.3, l.color + '0.15)');
+        grad.addColorStop(1,   l.color + '0)');
+        ctx.save();
+        ctx.beginPath();
+        var hw = canvas.width * l.width;
+        ctx.moveTo(ox - hw * 0.1, oy);
+        ctx.lineTo(tx - hw, ty);
+        ctx.lineTo(tx + hw, ty);
+        ctx.lineTo(ox + hw * 0.1, oy);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.restore();
+      });
+      requestAnimationFrame(drawLights);
+    }
+
+    drawLights();
+
+    setTimeout(function() {
+      overlay.style.transition = 'opacity .8s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { overlay.remove(); }, 900);
+    }, 3200);
+  </script>
+</body>
+</html>

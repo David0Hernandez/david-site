@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Limited Edition Prints Available — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== TYPEWRITER OVERLAY ===== */
+    #type-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0d0a06;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: 'Inconsolata', monospace; gap: 8px;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 28px, rgba(255,255,200,.02) 28px, rgba(255,255,200,.02) 29px
+      );
+    }
+    #type-text {
+      font-size: clamp(16px, 3vw, 22px);
+      color: #d4c88a; letter-spacing: 1px; line-height: 1.8;
+      max-width: 500px; text-align: left; min-height: 200px;
+    }
+    .cursor {
+      display: inline-block; width: 10px; height: 1.2em;
+      background: #d4c88a; vertical-align: text-bottom;
+      animation: cursor-blink .6s step-end infinite;
+    }
+    @keyframes cursor-blink { 50% { opacity: 0; } }
+    #type-paper-edge {
+      position: absolute; top: 0; left: 0; right: 0; height: 6px;
+      background: repeating-linear-gradient(90deg, #2a2010 0px, #2a2010 18px, #1a1008 18px, #1a1008 20px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TYPEWRITER OVERLAY -->
+  <div id="type-overlay">
+    <div id="type-paper-edge"></div>
+    <div id="type-text"><span id="type-output"></span><span class="cursor"></span></div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>Limited Edition Prints Available</h1>
+  <div class="date">2023 · SEP 22</div>
+  <p>Una selección de prints en edición limitada ya está disponible. Son diez piezas, diez copias de cada una, impresas en papel de alta calidad con tintas archivales.</p>
+  <p>Cada print viene firmado y numerado. No hay reimpresiones — cuando se terminan, se terminan.</p>
+  <p>El proceso de selección fue difícil. Elegí piezas que tienen algo en común: todas surgieron en momentos donde no estaba seguro de lo que estaba haciendo. A veces la incertidumbre produce las cosas más interesantes.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Septiembre 2023</p>
+
+  <script>
+    var lines = [
+      '> David Daily Archives',
+      '> Limited Edition Prints',
+      '> Loading entry...',
+      '> Signed. Numbered.',
+      '> When they\'re gone, they\'re gone.',
+      '> Ready.'
+    ];
+    var output = document.getElementById('type-output');
+    var overlay = document.getElementById('type-overlay');
+    var lineIdx = 0, charIdx = 0;
+    var full = '';
+
+    function typeNext() {
+      if (lineIdx >= lines.length) {
+        setTimeout(function() {
+          overlay.style.transition = 'opacity .5s ease';
+          overlay.style.opacity = '0';
+          document.body.classList.add('visible');
+          setTimeout(function() { overlay.remove(); }, 600);
+        }, 400);
+        return;
+      }
+      var line = lines[lineIdx];
+      if (charIdx < line.length) {
+        full += line[charIdx];
+        output.textContent = full;
+        charIdx++;
+        setTimeout(typeNext, 28 + Math.random() * 30);
+      } else {
+        full += '\n';
+        output.textContent = full;
+        lineIdx++; charIdx = 0;
+        setTimeout(typeNext, 200);
+      }
+    }
+
+    setTimeout(typeNext, 300);
+  </script>
+</body>
+</html>

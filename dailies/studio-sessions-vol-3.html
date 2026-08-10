@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Studio Sessions Vol. 3 — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== CASSETTE OVERLAY ===== */
+    #cassette-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #1a0a00;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+    }
+    .cassette-body {
+      width: min(320px, 80vw); height: min(190px, 50vw);
+      background: #2a1a08; border-radius: 12px;
+      border: 2px solid #5a3a18;
+      position: relative; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,200,100,.1);
+    }
+    .cassette-window {
+      position: absolute; top: 22%; left: 50%; transform: translateX(-50%);
+      width: 55%; height: 46%; background: #0d0d0d;
+      border-radius: 8px; border: 2px solid #5a3a18;
+      display: flex; align-items: center; justify-content: space-around; padding: 8px;
+    }
+    .reel {
+      width: 38%; aspect-ratio: 1;
+      border-radius: 50%; border: 4px solid #8a5a28;
+      background: radial-gradient(circle at center, #2a1a08 30%, #1a0a00 70%);
+      position: relative;
+      animation: reel-spin 1.2s linear infinite;
+    }
+    .reel::before {
+      content: '';
+      position: absolute; inset: 20%;
+      border-radius: 50%; background: #8a5a28;
+    }
+    .reel::after {
+      content: '';
+      position: absolute; inset: 35%;
+      border-radius: 50%; background: #0d0d0d;
+    }
+    @keyframes reel-spin { to { transform: rotate(360deg); } }
+    .cassette-tape {
+      position: absolute; bottom: 14%; left: 50%; transform: translateX(-50%);
+      width: 30%; height: 4px; background: #3a2a18; border-radius: 2px;
+    }
+    .cassette-label {
+      position: absolute; top: 6%; left: 10%; right: 10%; height: 18%;
+      background: #f14235; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inconsolata', monospace; font-size: 10px;
+      font-weight: 700; letter-spacing: 3px; color: #fff; text-transform: uppercase;
+    }
+    #cassette-text {
+      font-family: 'Inconsolata', monospace; font-size: 12px;
+      letter-spacing: 4px; color: #c8820a; text-transform: uppercase;
+      animation: blink3 .9s step-end infinite;
+    }
+    @keyframes blink3 { 50% { opacity: 0; } }
+    #cassette-bar {
+      width: min(320px, 80vw); height: 3px;
+      background: #2a1a08; border-radius: 1px;
+    }
+    #cassette-fill {
+      height: 100%; background: #f14235; border-radius: 1px;
+      width: 0; transition: width 2.8s linear;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CASSETTE OVERLAY -->
+  <div id="cassette-overlay">
+    <div class="cassette-body">
+      <div class="cassette-label">Studio Sessions Vol. 3</div>
+      <div class="cassette-window">
+        <div class="reel"></div>
+        <div class="reel" style="animation-duration:1.4s"></div>
+      </div>
+      <div class="cassette-tape"></div>
+    </div>
+    <div id="cassette-text">⏪ Rewinding...</div>
+    <div id="cassette-bar"><div id="cassette-fill"></div></div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>Studio Sessions Vol. 3</h1>
+  <div class="date">2023 · NOV 14</div>
+  <p>Tercer volumen de las Studio Sessions. Esta vez grabamos durante tres semanas seguidas sin salir casi — el resultado es algo que suena a encierro productivo, a urgencia contenida.</p>
+  <p>Hay ocho tracks. Algunos van a terminar en el próximo álbum, otros son experimentos que probablemente no vean la luz de otra manera. Los comparto porque creo que el proceso merece ser visible.</p>
+  <p>Disponible para escuchar completo en las plataformas de siempre.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Noviembre 2023</p>
+
+  <script>
+    var overlay = document.getElementById('cassette-overlay');
+    var fill    = document.getElementById('cassette-fill');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ fill.style.width = '100%'; });
+    });
+    setTimeout(function() {
+      overlay.style.transition = 'opacity .6s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { overlay.remove(); }, 700);
+    }, 3200);
+  </script>
+</body>
+</html>

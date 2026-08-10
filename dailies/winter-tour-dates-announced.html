@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Winter Tour Dates Announced — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    .dates-list { list-style: none; margin-bottom: 32px; }
+    .dates-list li { padding: 14px 0; border-bottom: 1px solid #1e1e1e; display: flex; gap: 24px; color: #ccc; font-size: 15px; }
+    .dates-list li span:first-child { color: #f14235; min-width: 100px; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== SNOW OVERLAY ===== */
+    #snow-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(180deg, #06101a 0%, #0a1628 100%);
+      overflow: hidden; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    #snow-overlay canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #snow-title {
+      position: relative; z-index: 2; text-align: center;
+      font-family: 'Inconsolata', monospace;
+    }
+    .snow-big {
+      font-size: clamp(32px, 8vw, 80px); font-weight: 700; letter-spacing: 8px;
+      color: #fff; text-transform: uppercase;
+      text-shadow: 0 0 40px rgba(150,200,255,.5);
+    }
+    .snow-sub {
+      font-size: 12px; letter-spacing: 5px; color: #6af; margin-top: 10px; text-transform: uppercase;
+    }
+    #snow-progress {
+      position: absolute; bottom: 0; left: 0; height: 3px;
+      background: #6af; width: 0; transition: width 2.8s linear; z-index: 3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SNOW OVERLAY -->
+  <div id="snow-overlay">
+    <canvas id="snow-canvas"></canvas>
+    <div id="snow-title">
+      <div class="snow-big">❄ Winter Tour</div>
+      <div class="snow-sub">Fechas confirmadas</div>
+    </div>
+    <div id="snow-progress"></div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>Winter Tour Dates Announced</h1>
+  <div class="date">2024 · JAN 09</div>
+  <p>Las fechas de la gira de invierno están confirmadas. Va a ser una serie de shows íntimos — espacios pequeños, sin pantallas gigantes, sin efectos especiales. Solo el sonido.</p>
+  <ul class="dates-list">
+    <li><span>ENE 28</span><span>Buenos Aires — Club Ciudad</span></li>
+    <li><span>FEB 03</span><span>Córdoba — Teatro Real</span></li>
+    <li><span>FEB 10</span><span>Rosario — La Nave</span></li>
+    <li><span>FEB 17</span><span>Mendoza — Espacio Cultural</span></li>
+    <li><span>FEB 24</span><span>Montevideo — Teatro Solís</span></li>
+  </ul>
+  <p>Entradas disponibles en la sección de Merch. Cupos limitados.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Enero 2024</p>
+
+  <script>
+    var canvas = document.getElementById('snow-canvas');
+    var ctx    = canvas.getContext('2d');
+    var overlay = document.getElementById('snow-overlay');
+    var prog    = document.getElementById('snow-progress');
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var flakes = Array.from({length: 120}, function() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: 1 + Math.random() * 4,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: 0.5 + Math.random() * 1.5,
+        alpha: 0.4 + Math.random() * 0.6
+      };
+    });
+
+    function drawSnow() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      flakes.forEach(function(f) {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(200,230,255,' + f.alpha + ')';
+        ctx.fill();
+        f.x += f.vx; f.y += f.vy;
+        if (f.y > canvas.height) { f.y = -4; f.x = Math.random() * canvas.width; }
+      });
+      requestAnimationFrame(drawSnow);
+    }
+
+    drawSnow();
+
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ prog.style.width = '100%'; });
+    });
+
+    setTimeout(function() {
+      overlay.style.transition = 'opacity .7s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { overlay.remove(); }, 800);
+    }, 3200);
+  </script>
+</body>
+</html>

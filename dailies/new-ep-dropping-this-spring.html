@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>New EP Dropping This Spring — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== VINYL / RECORD OVERLAY ===== */
+    #vinyl-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0a0a0a;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+    }
+    .vinyl-record {
+      width: min(260px, 60vw); height: min(260px, 60vw);
+      border-radius: 50%; position: relative;
+      animation: vinyl-spin 2s linear infinite;
+      background:
+        repeating-radial-gradient(circle at center,
+          #1a1a1a 0px, #111 2px, #1a1a1a 4px, #111 6px,
+          #1a1a1a 8px, #0d0d0d 10px
+        );
+      box-shadow: 0 0 60px rgba(0,0,0,.8), 0 0 0 2px #333;
+    }
+    @keyframes vinyl-spin { to { transform: rotate(360deg); } }
+    .vinyl-label {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 38%; height: 38%; border-radius: 50%;
+      background: #f14235;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: 'Inconsolata', monospace; color: #fff;
+      text-align: center; gap: 2px;
+    }
+    .vinyl-label-title { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; }
+    .vinyl-label-side { font-size: 7px; letter-spacing: 2px; opacity: .8; }
+    .vinyl-hole {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 8%; height: 8%; border-radius: 50%;
+      background: #0a0a0a;
+    }
+    #vinyl-info {
+      text-align: center; font-family: 'Inconsolata', monospace;
+    }
+    .vinyl-title-text {
+      font-size: clamp(16px, 4vw, 28px); font-weight: 700;
+      letter-spacing: 4px; color: #fff; text-transform: uppercase;
+    }
+    .vinyl-sub-text {
+      font-size: 11px; letter-spacing: 4px; color: #555; margin-top: 6px; text-transform: uppercase;
+    }
+    #vinyl-needle {
+      position: absolute; top: 18%; right: 22%;
+      width: 3px; height: 80px;
+      background: linear-gradient(to bottom, #888, #555);
+      border-radius: 1px;
+      transform-origin: top center;
+      transform: rotate(20deg);
+      animation: needle-swing 2s ease-in-out infinite alternate;
+    }
+    @keyframes needle-swing {
+      from { transform: rotate(18deg); }
+      to   { transform: rotate(28deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VINYL OVERLAY -->
+  <div id="vinyl-overlay">
+    <div style="position:relative">
+      <div class="vinyl-record">
+        <div class="vinyl-label">
+          <div class="vinyl-label-title">New EP</div>
+          <div class="vinyl-label-side">SIDE A</div>
+        </div>
+        <div class="vinyl-hole"></div>
+      </div>
+      <div id="vinyl-needle"></div>
+    </div>
+    <div id="vinyl-info">
+      <div class="vinyl-title-text">New EP</div>
+      <div class="vinyl-sub-text">David Daily · Spring 2023</div>
+    </div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>New EP Dropping This Spring</h1>
+  <div class="date">2023 · MAR 11</div>
+  <p>El EP nuevo está listo. Cinco tracks, grabados entre enero y febrero. Es el trabajo más concentrado que hice hasta ahora — sin relleno, sin experimentos que no van a ningún lado.</p>
+  <p>La fecha de lanzamiento es a fines de abril. Todavía no la confirmo porque quiero asegurarme de que todo esté bien antes de soltar la fecha exacta.</p>
+  <p>Lo que puedo decir: va a sonar diferente. Y creo que es diferente de la manera correcta.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Marzo 2023</p>
+
+  <script>
+    var overlay = document.getElementById('vinyl-overlay');
+    setTimeout(function() {
+      overlay.style.transition = 'opacity .7s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { overlay.remove(); }, 800);
+    }, 3200);
+  </script>
+</body>
+</html>

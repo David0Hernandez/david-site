@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>One More Month of Dailies — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== MATRIX OVERLAY ===== */
+    #matrix-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000; overflow: hidden;
+    }
+    #matrix-overlay canvas { display: block; width: 100%; height: 100%; }
+    #matrix-label {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      font-family: 'Inconsolata', monospace; color: #0f0; font-size: 13px;
+      letter-spacing: 4px; text-transform: uppercase; animation: blink .7s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <!-- MATRIX OVERLAY -->
+  <div id="matrix-overlay">
+    <canvas id="matrix-canvas"></canvas>
+    <div id="matrix-label">// Accediendo al archivo...</div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>One More Month of Dailies</h1>
+  <div class="date">2024 · DEC 02</div>
+  <p>Decidí extender un mes más el proyecto de las dailies. Lo que empezó como un ejercicio de disciplina se convirtió en algo más profundo — una forma de registrar el tiempo, de dejar una marca pequeña cada día.</p>
+  <p>Cada pieza es una instantánea. No todas son perfectas, no todas me gustan en retrospectiva, pero todas son honestas. Y eso es lo que importa.</p>
+  <p>El plan es terminar el ciclo en enero, con una selección de las mejores piezas disponibles en el Bazaar. Mientras tanto, sigo trabajando.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Diciembre 2024</p>
+
+  <script>
+    var canvas = document.getElementById('matrix-canvas');
+    var ctx = canvas.getContext('2d');
+    var overlay = document.getElementById('matrix-overlay');
+    var W, H, cols, drops;
+    var chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+
+    function init() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      cols  = Math.floor(W / 16);
+      drops = Array(cols).fill(1);
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0,0,0,0.05)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#0f0';
+      ctx.font = '14px Inconsolata, monospace';
+      for (var i = 0; i < drops.length; i++) {
+        var c = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = Math.random() > 0.95 ? '#fff' : '#0f0';
+        ctx.fillText(c, i * 16, drops[i] * 16);
+        if (drops[i] * 16 > H && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+
+    init();
+    window.addEventListener('resize', init);
+    var interval = setInterval(draw, 40);
+
+    setTimeout(function() {
+      overlay.style.transition = 'opacity .8s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { clearInterval(interval); overlay.remove(); }, 900);
+    }, 3000);
+  </script>
+</body>
+</html>

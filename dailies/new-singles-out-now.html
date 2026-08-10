@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>New Singles Out Now — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== MUSIC EQ OVERLAY ===== */
+    #eq-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    }
+    #eq-label {
+      font-family: 'Inconsolata', monospace;
+      font-size: 13px; letter-spacing: 6px; color: #f14235; text-transform: uppercase;
+    }
+    #eq-bars {
+      display: flex; align-items: flex-end; gap: 5px; height: 100px;
+    }
+    .eq-bar {
+      width: 14px; background: #f14235; border-radius: 2px 2px 0 0;
+      animation: eq-bounce var(--d, .5s) ease-in-out infinite alternate;
+      min-height: 4px;
+    }
+    @keyframes eq-bounce {
+      from { height: var(--min, 4px); }
+      to   { height: var(--max, 80px); }
+    }
+    #eq-track {
+      font-family: 'Inconsolata', monospace;
+      font-size: 11px; letter-spacing: 3px; color: #444;
+    }
+    #eq-progress {
+      width: 200px; height: 2px; background: #1a1a1a; border-radius: 1px; margin-top: 8px;
+    }
+    #eq-fill {
+      height: 100%; background: #f14235; border-radius: 1px; width: 0;
+      transition: width 2.8s linear;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- EQ OVERLAY -->
+  <div id="eq-overlay">
+    <div id="eq-label">▶ Now Playing</div>
+    <div id="eq-bars"></div>
+    <div>
+      <div id="eq-track">New Singles — David Daily</div>
+      <div id="eq-progress"><div id="eq-fill"></div></div>
+    </div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>New Singles Out Now</h1>
+  <div class="date">2024 · FEB 18</div>
+  <p>Dos nuevos singles disponibles en todas las plataformas. Estos tracks son los primeros adelantos de lo que viene — un proyecto más grande que vengo trabajando hace meses.</p>
+  <p>El sonido es diferente a lo que hice antes. Más directo, menos capas. Quería que se sintiera inmediato, casi urgente.</p>
+  <p>Escuchá, compartí si te gusta, y quedate atento porque hay más en camino.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Febrero 2024</p>
+
+  <script>
+    var container = document.getElementById('eq-bars');
+    var fill = document.getElementById('eq-fill');
+    var overlay = document.getElementById('eq-overlay');
+    var barCount = 28;
+
+    for (var i = 0; i < barCount; i++) {
+      var bar = document.createElement('div');
+      bar.className = 'eq-bar';
+      var minH = 4 + Math.random() * 10;
+      var maxH = 30 + Math.random() * 70;
+      var dur  = (0.3 + Math.random() * 0.5).toFixed(2);
+      bar.style.setProperty('--min', minH + 'px');
+      bar.style.setProperty('--max', maxH + 'px');
+      bar.style.setProperty('--d', dur + 's');
+      bar.style.animationDelay = (Math.random() * 0.4).toFixed(2) + 's';
+      var hue = Math.floor(Math.random() * 40);
+      bar.style.background = 'hsl(' + hue + ',90%,50%)';
+      container.appendChild(bar);
+    }
+
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ fill.style.width = '100%'; });
+    });
+
+    setTimeout(function() {
+      overlay.style.transition = 'opacity .6s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { overlay.remove(); }, 700);
+    }, 3200);
+  </script>
+</body>
+</html>

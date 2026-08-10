@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Survival Digital Collectibles — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== GLITCH / CYBERPUNK OVERLAY ===== */
+    #glitch-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #glitch-text {
+      font-family: 'Inconsolata', monospace;
+      font-size: clamp(40px, 10vw, 100px);
+      font-weight: 700; text-transform: uppercase;
+      color: #fff; letter-spacing: 8px;
+      position: relative;
+      animation: glitch-main 1.5s infinite;
+    }
+    #glitch-text::before,
+    #glitch-text::after {
+      content: attr(data-text);
+      position: absolute; inset: 0;
+      font-size: inherit; font-weight: inherit;
+      letter-spacing: inherit; text-transform: inherit;
+    }
+    #glitch-text::before {
+      color: #0ff; left: 3px; top: 0;
+      clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+      animation: glitch-r 1.5s infinite;
+    }
+    #glitch-text::after {
+      color: #f14235; left: -3px; top: 0;
+      clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+      animation: glitch-b 2s infinite;
+    }
+    @keyframes glitch-main {
+      0%,90%,100% { transform: none; }
+      91% { transform: translate(-2px, 1px); }
+      93% { transform: translate(2px, -1px); }
+      95% { transform: translate(-1px, 2px); }
+    }
+    @keyframes glitch-r {
+      0%,90%,100% { transform: none; opacity: 0.8; }
+      92% { transform: translate(4px, 0); }
+      94% { transform: translate(-4px, 0); }
+    }
+    @keyframes glitch-b {
+      0%,85%,100% { transform: none; opacity: 0.8; }
+      87% { transform: translate(-4px, 2px); }
+      89% { transform: translate(4px, -2px); }
+    }
+    .glitch-lines {
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(0,255,255,.03) 3px, rgba(0,255,255,.03) 4px
+      );
+    }
+    #glitch-sub {
+      position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%);
+      font-family: 'Inconsolata', monospace; font-size: 12px;
+      letter-spacing: 6px; color: #0ff; text-transform: uppercase;
+      animation: blink2 .6s step-end infinite;
+    }
+    @keyframes blink2 { 50% { opacity: 0; } }
+    .glitch-tear {
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: rgba(0,255,255,.6);
+      animation: tear-move 2.5s ease-in-out infinite;
+    }
+    @keyframes tear-move {
+      0%   { top: 10%; opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { top: 90%; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- GLITCH OVERLAY -->
+  <div id="glitch-overlay">
+    <div class="glitch-lines"></div>
+    <div class="glitch-tear"></div>
+    <div id="glitch-text" data-text="SURV1VAL">SURV1VAL</div>
+    <div id="glitch-sub">// system override</div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>Survival Digital Collectibles</h1>
+  <div class="date">2024 · MAR 03</div>
+  <p>El proyecto Survival llegó al mundo digital. Una colección de piezas coleccionables que traducen la estética cruda del proyecto original a un formato nuevo.</p>
+  <p>Cada ítem es único y está vinculado a una historia dentro del universo Survival. No son decoración, son fragmentos de narrativa que podés tener.</p>
+  <p>La colección completa estará disponible en fases. La primera fase ya está live — entrá al Bazaar para ver qué queda disponible.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Marzo 2024</p>
+
+  <script>
+    var overlay = document.getElementById('glitch-overlay');
+    setTimeout(function() {
+      overlay.style.transition = 'opacity .5s ease';
+      overlay.style.opacity = '0';
+      document.body.classList.add('visible');
+      setTimeout(function() { overlay.remove(); }, 600);
+    }, 3000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CH — News / Archives / Contact</title>
+  <meta name="description" content="CH — News / Archives / Contact" />
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;700&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+
+  <!-- Preload imágenes -->
+  <link rel="preload" as="image" href="images/fondo.jpeg">
+  <link rel="preload" as="image" href="images/001.png">
+  <link rel="preload" as="image" href="images/002.png">
+
+  <style>
+    /* ================== Variables ================== */
+    :root {
+      --sidebar-w: 96px;
+      --max: 1080px;
+
+      --text: #ffffff;
+      --muted: #888888;
+      --line: rgba(255, 255, 255, .18);
+      --red: #f14235;
+      --red-hover: #ff5c50;
+      --red-dim: #de8e88;
+
+      --title-size: clamp(90px, 17vw, 340px);
+      --arch-size: clamp(80px, 14vw, 260px);
+
+      --news-tilt: -15deg;
+      --news-shift-x: -22vw;
+      --news-shift-y: -8vh;
+      --arch-shift-y: -4vh;
+
+      --edge-002-h: 150px;
+    }
+
+    /* ================== Reset ================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      background: #000;
+    }
+
+    html, body { overflow-x: hidden; }
+
+    body {
+      color: var(--text);
+      font-family: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+      font-size: 16px;
+      line-height: 1.5;
+      background: #111;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: url("images/fondo.jpeg") center/cover no-repeat;
+      filter: hue-rotate(240deg);
+    }
+
+    .display {
+      font-family: 'Bebas Neue', 'Barlow Condensed', system-ui, sans-serif;
+      letter-spacing: 1px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .main {
+      margin-left: calc(var(--sidebar-w) + 20px);
+      padding: 32px 24px 0;
+    }
+
+    /* ================== Sidebar ================== */
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: var(--sidebar-w);
+      background: var(--red);
+      border-right: none;
+      box-shadow: 1px 0 60px rgba(0,0,0,.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 18px 10px;
+      z-index: 1000;
+    }
+
+    .brand {
+      width: 70px;
+      display: grid;
+      place-items: center;
+      user-select: none;
+    }
+
+    .brand img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .nav {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .nav a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 6px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 4px;
+      transition: .2s;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nav a:hover {
+      border-color: #fff;
+      color: var(--red-dim);
+    }
+
+    .spacer { flex: 1; }
+
+    .small {
+      font-size: 9px;
+      color: rgba(255,255,255,.55);
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: .5px;
+    }
+
+    /* ================== NEWS ================== */
+    #news {
+      position: relative;
+      padding: 40px 0 10px;
+    }
+
+    .title-news {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 8px;
+      font-size: var(--title-size);
+      line-height: .9;
+      text-shadow: 0 4px 32px rgba(0,0,0,.5);
+      color: #fff;
+    }
+
+    .news-visual {
+      position: relative;
+      z-index: 1;
+      height: 42vw;
+      max-height: 580px;
+      min-height: 260px;
+      margin: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .news-visual img {
+      position: absolute;
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      display: block;
+      transform: translate(var(--news-shift-x), var(--news-shift-y)) rotate(var(--news-tilt));
+      transform-origin: left top;
+      filter: drop-shadow(0 14px 40px rgba(0,0,0,.7));
+      border-radius: 20px;
+    }
+
+    /* ================== ARCHIVES ================== */
+    #archives {
+      position: relative;
+      padding: 0 0 24px;
+    }
+
+    .arch-title {
+      position: relative;
+      z-index: 3;
+      margin: 0 0 6px;
+      font-size: var(--arch-size);
+      line-height: .9;
+      text-transform: uppercase;
+      transform: translateY(var(--arch-shift-y));
+      text-shadow: 0 4px 32px rgba(0,0,0,.5);
+      color: #fff;
+    }
+
+    .entries {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 0;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 980px) {
+      .entries { grid-template-columns: 1fr; }
+    }
+
+    .entry {
+      border-top: 1px solid rgba(255,255,255,.15);
+      padding: 22px 0 20px;
+    }
+
+    .entry:first-child {
+      border-top: 0;
+    }
+
+    .kicker {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+
+    .entry h3 {
+      margin: .3rem 0 .6rem;
+      font-family: 'Bebas Neue', 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      font-size: clamp(26px, 4vw, 48px);
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
+    .entry a { color: #fff; text-decoration: none; }
+
+    .entry h3 a:hover { color: var(--red-dim); }
+
+    .meta {
+      color: rgba(255,255,255,.5);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .more {
+      display: inline-block;
+      margin-top: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255,255,255,.4);
+      padding-bottom: 1px;
+      transition: .2s;
+    }
+
+    .more:hover {
+      border-bottom-color: var(--red);
+      color: var(--red-dim);
+    }
+
+    /* ================== Franja 002 ================== */
+    .edge-image {
+      position: relative;
+      margin-left: calc(50% - 50vw);
+      width: 100vw;
+      height: var(--edge-002-h);
+      background: #000;
+      overflow: hidden;
+    }
+
+    .edge-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("images/002.png") center bottom / cover no-repeat;
+      transform: scaleY(-1);
+    }
+
+    /* ================== CONTACT ================== */
+    #contact {
+      position: relative;
+      margin-left: calc(50% - 50vw);
+      width: 100vw;
+      background: #000;
+      padding: 48px 0 0;
+      color: #fff;
+    }
+
+    .contact-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px 48px;
+    }
+
+    .contact-title {
+      margin: 0 0 18px;
+      font-size: clamp(56px, 9vw, 120px);
+    }
+
+    .cols {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: 1.1fr .9fr;
+    }
+
+    @media (max-width: 900px) {
+      .cols { grid-template-columns: 1fr; }
+    }
+
+    .cols p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .cols p a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 4px;
+      border: 1px solid #424242;
+      background: #0d0d0d;
+      color: #faebd7;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      transition: border-color .2s;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #fff;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 14px 28px;
+      border-radius: 4px;
+      border: 1px solid #fff;
+      color: #000;
+      background: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+
+    .btn:hover {
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
+    }
+
+    /* ================== Footer ================== */
+    .site-footer {
+      margin-left: calc(50% - 50vw);
+      width: 100vw;
+      background: #000;
+      color: #fff;
+      border-top: 1px solid rgba(255,255,255,.12);
+    }
+
+    .footer-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px 24px 44px;
+    }
+
+    .footer-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 8px;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 1.5px;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .footer-menu a {
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 4px;
+      transition: .2s;
+    }
+
+    .footer-menu a:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,.5);
+    }
+
+    .social-bar {
+      border-top: 1px solid rgba(255,255,255,.12);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      padding: 18px 0;
+      margin: 0 0 24px;
+    }
+
+    .social {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .social a {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,.2);
+      color: #fff;
+      text-decoration: none;
+      transition: .2s;
+    }
+
+    .social a:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .social svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .legal {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 22px;
+      justify-content: space-between;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .5px;
+    }
+
+    .legal a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .legal a:hover {
+      color: #fff;
+    }
+
+    /* ================== Responsive ================== */
+    @media (max-width: 640px) {
+      .main {
+        margin-left: calc(var(--sidebar-w) + 12px);
+        padding: 20px 14px 0;
+      }
+
+      .news-visual { height: 58vw; }
+
+      :root {
+        --news-shift-x: -30vw;
+        --news-shift-y: -6vh;
+      }
+
+      .footer-menu { font-size: 10px; }
+
+      .contact-title { font-size: 48px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== WELCOME OVERLAY ===== -->
+  <div id="welcome-overlay" style="
+    position:fixed;inset:0;z-index:9999;background:#000;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:'Bebas Neue',sans-serif;color:#fff;overflow:hidden;
+  ">
+    <div id="wl-logo" style="
+      opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease;
+    "><img src="images/firma blanco transparente.png" alt="Logo" style="width:clamp(120px,20vw,260px);height:auto;display:block;"></div>
+    <div id="wl-text" style="
+      font-size:clamp(14px,3vw,32px);letter-spacing:12px;color:#f14235;
+      margin-top:12px;opacity:0;transition:opacity .6s ease .5s;text-transform:uppercase;
+    ">Bienvenidos</div>
+    <div id="wl-sub" style="
+      font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;
+      color:#444;margin-top:18px;opacity:0;transition:opacity .6s ease .9s;text-transform:uppercase;
+    ">News · Archives · Contact</div>
+    <div id="wl-bar" style="
+      position:absolute;bottom:0;left:0;height:3px;background:#f14235;width:0;
+      transition:width 2.2s linear .3s;
+    "></div>
+  </div>
+
+  <script>
+    (function(){
+      var ov = document.getElementById('welcome-overlay');
+      var logo = document.getElementById('wl-logo');
+      var text = document.getElementById('wl-text');
+      var sub  = document.getElementById('wl-sub');
+      var bar  = document.getElementById('wl-bar');
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          logo.style.opacity='1'; logo.style.transform='translateY(0)';
+          text.style.opacity='1';
+          sub.style.opacity='1';
+          bar.style.width='100%';
+        });
+      });
+      setTimeout(function(){
+        ov.style.transition='opacity .6s ease';
+        ov.style.opacity='0';
+        setTimeout(function(){ ov.remove(); }, 650);
+      }, 2800);
+    })();
+  </script>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/firma blanco transparente.png" alt="Logo">
+    </div>
+    <nav class="nav">
+      <a href="#news">NEWS</a>
+      <a href="#archives">ARCH</a>
+      <a href="#contact">CONT</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="small">© <span id="yr-side"></span></div>
+  </aside>
+
+  <main class="main">
+
+    <!-- NEWS -->
+    <section id="news" class="wrap">
+      <h1 class="title-news display">NEWS</h1>
+      <figure class="news-visual" aria-hidden="true">
+        <img src="images/001.png" alt="">
+      </figure>
+    </section>
+
+    <!-- ARCHIVES -->
+    <section id="archives" class="wrap">
+      <h2 class="arch-title display">ARCHIVES</h2>
+
+      <div class="entries">
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/one-more-month-of-dailies.html">One More Month of Dailies</a></h3>
+          <div class="meta">2024 · DEC 02</div>
+          <a class="more" href="dailies/one-more-month-of-dailies.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/seer-now-up-in-bazaar.html">"Seer" Now Up in Bazaar</a></h3>
+          <div class="meta">2024 · AUG 12</div>
+          <a class="more" href="dailies/seer-now-up-in-bazaar.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/paper-cuts-new-artwork.html">Paper Cuts / New Artwork</a></h3>
+          <div class="meta">2024 · JUN 21</div>
+          <a class="more" href="dailies/paper-cuts-new-artwork.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/survival-digital-collectibles.html">Survival Digital Collectibles</a></h3>
+          <div class="meta">2024 · MAR 03</div>
+          <a class="more" href="dailies/survival-digital-collectibles.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/new-singles-out-now.html">New Singles Out Now</a></h3>
+          <div class="meta">2024 · FEB 18</div>
+          <a class="more" href="dailies/new-singles-out-now.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/winter-tour-dates-announced.html">Winter Tour Dates Announced</a></h3>
+          <div class="meta">2024 · JAN 09</div>
+          <a class="more" href="dailies/winter-tour-dates-announced.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/studio-sessions-vol-3.html">Studio Sessions Vol. 3</a></h3>
+          <div class="meta">2023 · NOV 14</div>
+          <a class="more" href="dailies/studio-sessions-vol-3.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/limited-edition-prints-available.html">Limited Edition Prints Available</a></h3>
+          <div class="meta">2023 · SEP 22</div>
+          <a class="more" href="dailies/limited-edition-prints-available.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/collaboration-with-the-archive.html">Collaboration with the Archive</a></h3>
+          <div class="meta">2023 · JUL 07</div>
+          <a class="more" href="dailies/collaboration-with-the-archive.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/live-at-the-forum-recap.html">Live at the Forum — Recap</a></h3>
+          <div class="meta">2023 · MAY 30</div>
+          <a class="more" href="dailies/live-at-the-forum-recap.html">Read More →</a>
+        </article>
+
+        <article class="entry">
+          <div class="kicker">David Daily</div>
+          <h3><a href="dailies/new-ep-dropping-this-spring.html">New EP Dropping This Spring</a></h3>
+          <div class="meta">2023 · MAR 11</div>
+          <a class="more" href="dailies/new-ep-dropping-this-spring.html">Read More →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Franja con 002 -->
+    <div class="edge-image" aria-hidden="true"></div>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="contact-wrap">
+        <h2 class="contact-title display">CONTACT</h2>
+        <div class="cols">
+          <div>
+            <p>Escríbeme para colaboraciones o prensa.</p>
+            <p>Correo: <a href="mailto:tucorreo@ejemplo.com">tucorreo@ejemplo.com</a></p>
+          </div>
+          <form onsubmit="event.preventDefault(); alert('Mensaje enviado (demo)');">
+            <div style="display:grid; gap:12px">
+              <input type="text" placeholder="Tu nombre" required>
+              <input type="email" placeholder="Tu email" required>
+              <textarea placeholder="Tu mensaje"></textarea>
+              <div><button class="btn" type="submit">Enviar</button></div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <div class="footer-wrap">
+          <nav class="footer-menu">
+            <a href="#news">News</a>
+            <a href="#">Music</a>
+            <a href="#">Ziggurats</a>
+            <a href="#">Artwork</a>
+            <a href="#">The Bazaar</a>
+            <a href="#">Daily Auction</a>
+            <a href="#">Merch</a>
+            <a href="#">About</a>
+            <a href="#">Surv1val</a>
+          </nav>
+
+          <!-- Social -->
+          <div class="social-bar">
+            <div class="social">
+              <!-- Instagram -->
+              <a href="https://instagram.com/" target="_blank" aria-label="Instagram" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
+                </svg>
+              </a>
+              <!-- X -->
+              <a href="https://twitter.com/" target="_blank" aria-label="X" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2H21l-6.5 7.43L22.5 22H16l-5-6.6L5 22H2l7.2-8.23L1.8 2H8l4.6 6.08L18.244 2Z"/>
+                </svg>
+              </a>
+              <!-- YouTube -->
+              <a href="https://youtube.com/" target="_blank" aria-label="YouTube" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.5 6.2a4 4 0 0 0-2.8-2.8C18.6 3 12 3 12 3s-6.6 0-8.7.4A4 4 0 0 0 .5 6.2 41.2 41.2 0 0 0 0 12a41.2 41.2 0 0 0 .5 5.8 4 4 0 0 0 2.8 2.8C5.4 21 12 21 12 21s6.6 0 8.7-.4a4 4 0 0 0 2.8-2.8A41.2 41.2 0 0 0 24 12a41.2 41.2 0 0 0-.5-5.8zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/>
+                </svg>
+              </a>
+              <!-- TikTok -->
+              <a href="https://tiktok.com/" target="_blank" aria-label="TikTok" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16.5 3c.6 1.8 2.1 3.3 3.9 3.9v3.2a8.8 8.8 0 0 1-4.2-1.3v6.9a6.7 6.7 0 1 1-6.7-6.7c.4 0 .8 0 1.2.1v3.3a3.4 3.4 0 1 0 2.4 3.2V3h3.4z"/>
+                </svg>
+              </a>
+              <!-- Twitch -->
+              <a href="https://twitch.tv/" target="_blank" aria-label="Twitch" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4 2h16v11.5l-4 4H12l-2.7 2.7H7.3V17.5H4V2Zm2 2v11.5h3.3v2.7l2.7-2.7h4l2.7-2.7V4H6Zm8 2h2v5h-2V6Zm-4 0h2v5h-2V6Z"/>
+                </svg>
+              </a>
+              <!-- Discord -->
+              <a href="https://discord.com/" target="_blank" aria-label="Discord" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20 4a16 16 0 0 0-4-.9l-.2.4A13 13 0 0 1 12 4c-1 0-2-.1-3.8-.5l-.2-.4A16 16 0 0 0 4 4c-1.7 2.5-2.7 5.6-2.7 8.8 0 0 0 0 0 0 3.7 3.7 0 0 0 2.5 3.3c.2 0 .3 0 .5 0l.7-1.2A11 11 0 0 1 8 16l.5.8c1 .2 2 .3 3.5 .3s2.5-.1 3.5-.3l.5-.8a11 11 0 0 1 3 .9l.7 1.2h.5a3.7 3.7 0 0 0 2.5-3.3v-.1C22.7 9.6 21.7 6.5 20 4ZM9.6 13.8c-.8 0-1.5-.7-1.5-1.6 0-.9.7-1.6 1.5-1.6s1.5 .7 1.5 1.6c0 .9-.7 1.6-1.5 1.6Zm4.8 0c-.8 0-1.5-.7-1.5-1.6 0-.9 .7-1.6 1.5-1.6s1.5 .7 1.5 1.6c0 .9-.7 1.6-1.5 1.6Z"/>
+                </svg>
+              </a>
+              <!-- Facebook -->
+              <a href="https://facebook.com/" target="_blank" aria-label="Facebook" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 3h4v3h-3a1 1 0 0 0-1 1v3h4l-.5 3H13v8h-3v-8H7v-3h3V7.5A3.5 3.5 0 0 1 13.5 4H13V3Z"/>
+                </svg>
+              </a>
+              <!-- WhatsApp -->
+              <a href="https://wa.me/" target="_blank" aria-label="WhatsApp" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.5 3.5A10 10 0 0 0 3.6 17.7L2 22l4.4-1.6A10 10 0 1 0 20.5 3.5ZM12 20a8 8 0 0 1-4.1-1.1l-.3-.2-2.4.9.8-2.3-.2-.3A8 8 0 1 1 12 20Zm4.3-5.5c-.2-.1-1.2-.6-1.4-.6s-.3 0-.5.2-.5.6-.7.8c-.1.1-.2.1-.4 0a6.5 6.5 0 0 1-3-2.7c-.2-.3 0-.4.1-.6l.3-.4.2-.4c.1-.1 0-.3 0-.4l-.6-1.4c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.4.1-.6.3-.2.2-.8.7-.8 1.8s.8 2.1.9 2.3a9.9 9.9 0 0 0 3.7 3.2c.5.2.9.3 1.2.4.5.2 1 .2 1.3.1.4-.1 1.2-.5 1.4-1 .1-.5.1-.9.1-1 0-.1-.1-.2-.3-.3Z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Legal -->
+          <div class="legal">
+            <div>© <span id="yr-foot"></span> CH. All Rights Reserved.</div>
+            <div>
+              <a href="#">Terms of Service</a> · <a href="#">Privacy Policy</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+  </main>
+
+  <script>
+    const y = new Date().getFullYear();
+    document.getElementById('yr-side').textContent = y;
+    document.getElementById('yr-foot').textContent = y;
+  </script>
+</body>
+
+</html>

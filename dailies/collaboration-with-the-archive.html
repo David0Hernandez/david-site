@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Collaboration with the Archive — David Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #0d0d0d; }
+    body { font-family: 'Inconsolata', monospace; color: #e8e8e8; background: #0d0d0d; padding: 64px 24px 96px; max-width: 720px; margin: 0 auto; line-height: 1.75; font-size: 17px; opacity: 0; transition: opacity .5s ease; }
+    body.visible { opacity: 1; }
+    .back { display: inline-block; color: #f14235; text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 48px; border-bottom: 1px solid #f14235; padding-bottom: 1px; }
+    .back:hover { opacity: .7; }
+    .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #f14235; margin-bottom: 12px; }
+    h1 { font-weight: 700; font-size: clamp(28px, 5vw, 52px); line-height: 1.1; color: #fff; margin-bottom: 16px; }
+    .date { font-size: 13px; letter-spacing: 1.5px; color: #666; margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 24px; }
+    p { margin-bottom: 22px; color: #ccc; }
+    hr { border: none; border-top: 1px solid #222; margin: 40px 0; }
+
+    /* ===== FILM COUNTDOWN OVERLAY ===== */
+    #film-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #111; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* Film grain */
+    #film-overlay::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.15'/%3E%3C/svg%3E");
+      animation: grain-shift .12s steps(1) infinite;
+    }
+    @keyframes grain-shift {
+      0%  { transform: translate(0,0); }
+      25% { transform: translate(-2px,1px); }
+      50% { transform: translate(2px,-1px); }
+      75% { transform: translate(-1px,2px); }
+    }
+    /* Sprocket holes */
+    .sprockets {
+      position: absolute; top: 0; bottom: 0; width: 36px;
+      background: #000; z-index: 2; display: flex; flex-direction: column;
+      align-items: center; padding: 8px 0; gap: 16px; overflow: hidden;
+    }
+    .sprockets.left { left: 0; }
+    .sprockets.right { right: 0; }
+    .sprocket-hole {
+      width: 20px; height: 16px; background: #333; border-radius: 3px; flex-shrink: 0;
+    }
+    /* Countdown number */
+    #film-number {
+      position: relative; z-index: 3; text-align: center;
+    }
+    .film-count {
+      font-family: 'Inconsolata', monospace;
+      font-size: clamp(80px, 20vw, 200px);
+      font-weight: 700; color: #f5e8c0;
+      text-shadow: 0 0 60px rgba(245,232,192,.2);
+      line-height: 1;
+      animation: film-flicker .08s steps(1) infinite;
+    }
+    @keyframes film-flicker {
+      0%,90%,100% { opacity: 1; }
+      92% { opacity: .6; }
+    }
+    .film-circle {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: clamp(120px, 25vw, 260px); height: clamp(120px, 25vw, 260px);
+      border-radius: 50%; border: 3px solid rgba(245,232,192,.3);
+      z-index: -1;
+    }
+    .film-cross-h, .film-cross-v {
+      position: absolute; background: rgba(245,232,192,.15);
+    }
+    .film-cross-h { height: 1px; left: 0; right: 0; top: 50%; }
+    .film-cross-v { width: 1px; top: 0; bottom: 0; left: 50%; }
+    #film-label {
+      font-family: 'Inconsolata', monospace; font-size: 11px;
+      color: #888; letter-spacing: 4px; text-transform: uppercase; margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FILM COUNTDOWN OVERLAY -->
+  <div id="film-overlay">
+    <div class="sprockets left" id="spr-l"></div>
+    <div class="sprockets right" id="spr-r"></div>
+    <div id="film-number">
+      <div class="film-circle"></div>
+      <div class="film-cross-h"></div>
+      <div class="film-cross-v"></div>
+      <div class="film-count" id="film-digit">5</div>
+      <div id="film-label">The Archive</div>
+    </div>
+  </div>
+
+  <a class="back" href="../index.html">← Volver</a>
+  <div class="kicker">David Daily</div>
+  <h1>Collaboration with the Archive</h1>
+  <div class="date">2023 · JUL 07</div>
+  <p>Trabajé junto al equipo de The Archive en un proyecto que mezcla archivo fotográfico con trabajo visual contemporáneo. La idea era crear un diálogo entre épocas.</p>
+  <p>El resultado es una serie de piezas donde imágenes de archivo se intervienen, se superponen, se recontextualizan. No es nostalgia — es conversación.</p>
+  <p>El proyecto va a estar en exhibición el próximo trimestre. Más detalles pronto.</p>
+  <hr>
+  <p style="color:#555; font-size:13px;">David Daily · Julio 2023</p>
+
+  <script>
+    // Fill sprocket holes
+    ['spr-l','spr-r'].forEach(function(id) {
+      var el = document.getElementById(id);
+      for (var i = 0; i < 30; i++) {
+        var h = document.createElement('div');
+        h.className = 'sprocket-hole';
+        el.appendChild(h);
+      }
+    });
+
+    var digit = document.getElementById('film-digit');
+    var overlay = document.getElementById('film-overlay');
+    var count = 5;
+
+    var interval = setInterval(function() {
+      count--;
+      if (count <= 0) {
+        clearInterval(interval);
+        digit.textContent = '▶';
+        setTimeout(function() {
+          overlay.style.transition = 'opacity .5s ease';
+          overlay.style.opacity = '0';
+          document.body.classList.add('visible');
+          setTimeout(function() { overlay.remove(); }, 600);
+        }, 500);
+        return;
+      }
+      digit.textContent = count;
+    }, 500);
+  </script>
+</body>
+</html>
